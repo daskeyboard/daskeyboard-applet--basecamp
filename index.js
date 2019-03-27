@@ -1,7 +1,7 @@
 const q = require('daskeyboard-applet');
 
 const logger = q.logger;
-const queryUrlBase = 'https://3.basecampapi.com';
+const queryUrlBase = 'https://3.basecampapi.com/';
 
 //  https://3.basecamp.com/4200534/projects.json
 
@@ -29,64 +29,65 @@ class Basecamp extends q.DesktopApp {
     this.notification = "";
   }
 
-  async getMe() {
-    const query = "/users/me";
+  async getProjects() {
+    const query = "4200534/projects.json";
     const proxyRequest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
       uri: queryUrlBase + query
     });
 
-    // first get the user workspaces
+    // first get the user projects
     return this.oauth2ProxyRequest(proxyRequest);
   }
 
-  async getNewTasks() {
+  async getUpdates() {
     // first get the user workspaces
-    return this.getMe().then(json => {
+    return this.getProjects().then(json => {
       const user = json.data;
-      if (user.workspaces && user.workspaces.length) {
-        const workspaceId = user.workspaces[0].id;
+      logger.info("This is the json of the projects: ", JSON.stringify(json));
+      // if (user.workspaces && user.workspaces.length) {
+      //   const workspaceId = user.workspaces[0].id;
 
-        const query = `/workspaces/${workspaceId}/tasks/search`;
-        const proxyRequest = new q.Oauth2ProxyRequest({
-          apiKey: this.authorization.apiKey,
-          uri: queryUrlBase + query,
-          method: 'GET',
-          qs: {
-          },
-        });
-        return (this.oauth2ProxyRequest(proxyRequest));
-      }
+      //   const query = `/workspaces/${workspaceId}/tasks/search`;
+      //   const proxyRequest = new q.Oauth2ProxyRequest({
+      //     apiKey: this.authorization.apiKey,
+      //     uri: queryUrlBase + query,
+      //     method: 'GET',
+      //     qs: {
+      //     },
+      //   });
+      //   return (this.oauth2ProxyRequest(proxyRequest));
+      // }
     }).then(json => {
       return json.data.filter(task => {
-        return ((this.tasksUpdated[task.id] != task.modified_at) && (task.assignee_status === 'new' ||
-          task.assignee_status === 'inbox'));
+        logger.info("This is a task: ", JSON.stringify(task));
+
+        // return ((this.tasksUpdated[task.id] != task.modified_at) && (task.assignee_status === 'new' ||
+        //   task.assignee_status === 'inbox'));
       });
 
     }).then(list => {
-      for (let task of list) {
-        // For updating tasks seen
-        // this.taskSeen[task.id]=1;
-
-        // For updating tasks updated
-        this.tasksUpdated[task.id] = task.modified_at;
-      }
+      // for (let task of list) {
+      //   this.tasksUpdated[task.id] = task.modified_at;
+      // }
       return list;
     });
   }
 
   async run() {
     console.log("Running.");
-    return this.getNewTasks().then(newTasks => {
+    return this.getUpdates().then(newUpdates => {
       this.timestamp = getTimestamp();
-      if (newTasks && newTasks.length > 0) {
-        logger.info("Got " + newTasks.length + " notification.");
+      if (newUpdates && newUpdates.length > 0) {
 
-        if (newTasks.length == 1) {
+        if (newUpdates.length == 1) {
           this.notification = "notification";
         } else {
           this.notification = "notifications";
         }
+
+        logger.info("Got " + newUpdates.length + this.notification);
+
 
         return new q.Signal({
           points: [
