@@ -81,9 +81,9 @@ class Basecamp extends q.DesktopApp {
       if (newUpdates && newUpdates.length > 0) {
 
         if (newUpdates.length == 1) {
-          this.notification = "notification";
+          this.notification = "a new notification";
         } else {
-          this.notification = "notifications";
+          this.notification = "new notifications";
         }
 
         logger.info("Got " + newUpdates.length + this.notification);
@@ -94,7 +94,7 @@ class Basecamp extends q.DesktopApp {
             [new q.Point("#0000FF", q.Effects.BLINK)]
           ],
           name: `Basecamp`,
-          message: `You have a new notification.`,
+          message: `You have ${this.notification}.`,
           link: {
             url: 'https://basecamp.com',
             label: 'Show in Basecamp',
