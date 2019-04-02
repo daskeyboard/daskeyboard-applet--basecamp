@@ -62,6 +62,7 @@ class Basecamp extends q.DesktopApp {
 
           // Need to send a signal         
           triggered=true;
+          logger.info("Got an update in:" + project.name);
 
           // Need to update the time of the project which got an update
           this.updated_at[project.name] = project.updated_at;
@@ -96,6 +97,7 @@ class Basecamp extends q.DesktopApp {
           },
         });
       } else {
+        logger.info("None udpate received.");
         return null;
       }
     }).catch(error => {
