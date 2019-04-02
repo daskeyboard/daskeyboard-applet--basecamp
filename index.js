@@ -22,6 +22,8 @@ class Basecamp extends q.DesktopApp {
     super();
     this.timestamp = getTimestamp();
     // For checking plural or singular
+    // run every 20 sec
+    this.pollingInterval = 60 * 1000;
     this.notification = "";
   }
 
@@ -41,7 +43,7 @@ class Basecamp extends q.DesktopApp {
       logger.info("Let's configure the project table.");
 
       for (let project of projects) {
-        logger.info("This is section inside the json: " + JSON.stringify(project));
+        // logger.info("This is section inside the json: " + JSON.stringify(project));
         // Get name
         // this.projects[project.name]["name"] = project.name;
         // Get date
@@ -50,6 +52,8 @@ class Basecamp extends q.DesktopApp {
         // url = project.app_url;
 
       }
+
+      logger.info("This is updated_at inside applyConfig(): " + JSON.stringify(this.updated_at));
 
     })
     .catch(error => {
@@ -78,26 +82,47 @@ class Basecamp extends q.DesktopApp {
     return this.getAllProjects().then(projects => {
       let triggered = false;
       let message = [];
+      this.url = "";
+      var notification = 0;
 
       this.timestamp = getTimestamp();
 
-      logger.info("This is the json of the projects: " + JSON.stringify(projects));
-      
+      // logger.info("This is the json of the projects: " + JSON.stringify(projects));
+      logger.info("This is updated_at inside run() before update: " + JSON.stringify(this.updated_at));
+
 
       for (let project of projects) {
-        logger.info("This is section inside the json: " + JSON.stringify(project));
-        if(project.updated_at> this.updated_at[project.name]){
+        // logger.info("This is section inside the json: " + JSON.stringify(project));
+        if(project.updated_at > this.updated_at[project.name]){
+
           // Need to send a signal         
           triggered=true;
+
           // Need to update the time
           this.updated_at[project.name] = project.updated_at;
+
           // Update signal's message
           message.push(`New update in ${project.name}.`);
+
+          // Update url
+          // If there are several notifications on different projects:
+          // the url needs to redirect on the projects page
+          if(notification >= 1){
+            this.url = `https://3.basecamp.com/4200534/projects/`;
+          }else{
+            this.url = project.app_url;
+          }
+          notification = notification +1;
         }
 
       }
 
+
+
       if (triggered) {
+
+        logger.info("This is updated_at inside run() if UPDATED: " + JSON.stringify(this.updated_at));
+
 
         // if (newUpdates.length == 1) {
         //   this.notification = "a new notification";
@@ -112,7 +137,7 @@ class Basecamp extends q.DesktopApp {
           name: `Basecamp`,
           message: message.join("<br>"),
           link: {
-            url: 'https://3.basecamp.com',
+            url: this.url,
             label: 'Show in Basecamp',
           },
         });
