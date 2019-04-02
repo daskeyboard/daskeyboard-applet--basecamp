@@ -39,7 +39,37 @@
     },
     "authorization": {
       "type": "oauth2"
-    }
+    },
+    "questions": [
+      {
+        "key": "reposId",
+        "label": "Add a repo Id",
+        "help": "To find out the ID of your repository, copy it from the end of the URL of the Board. e.g: https://app.zenhub.com/<workspace>/boards?repos=<YOUR_REPO_ID>",
+        "supportUrl": "https://app.zenhub.com/select-organization",
+        "required": true,
+        "placeholder": "e.g: 745269657",
+        "order": 1,
+        "controlType": "textbox"
+      },
+      {
+        "key": "color",
+        "label": "Choose the color of the rmessageminder",
+        "help": "",
+        "required": true,
+        "order": 1,
+        "value": "#FFFF00",
+        "controlType": "color"
+      },
+      {
+        "key": "effect",
+        "label": "Choose the effect of the reminder",
+        "help": "",
+        "required": true,
+        "order": 2,
+        "value": "BLINK",
+        "controlType": "effect"
+      }
+    ]
   },
   "devDependencies": {
     "mocha": "^5.2.0"
