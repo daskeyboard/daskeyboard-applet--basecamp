@@ -2,7 +2,7 @@
   "name": "daskeyboard-applet--basecamp",
   "displayName": "Basecamp",
   "version": "1.0.0",
-  "description": "Displays Basecamp notifications.",
+  "description": "Displays Basecamp 3 notifications.",
   "longDescription": "Get a visual notification on your Das Keyboard Q series when there is a new Basecamp action.",
   "officialProductName": "Basecamp",
   "appUrl": "www.github.com",
