@@ -42,12 +42,12 @@
     },
     "questions": [
       {
-        "key": "reposId",
-        "label": "Add a repo Id",
-        "help": "To find out the ID of your repository, copy it from the end of the URL of the Board. e.g: https://app.zenhub.com/<workspace>/boards?repos=<YOUR_REPO_ID>",
+        "key": "userId",
+        "label": "User ID",
+        "help": "To find out the ID of the account, copy it from the end of the URL of the Board. e.g: https://3.basecamp.com/<YOUR_REPO_ID>/projects",
         "supportUrl": "https://app.zenhub.com/select-organization",
         "required": true,
-        "placeholder": "e.g: 745269657",
+        "placeholder": "e.g: 7452696",
         "order": 1,
         "controlType": "textbox"
       },
