@@ -1,7 +1,7 @@
 const q = require('daskeyboard-applet');
 
 const logger = q.logger;
-const queryUrlBase = 'https://3.basecampapi.com/';
+const queryUrlBase = 'https://3.basecampapi.com';
 
 //  https://3.basecamp.com/4200534/projects.json
 
@@ -21,16 +21,12 @@ class Basecamp extends q.DesktopApp {
   constructor() {
     super();
     this.timestamp = getTimestamp();
-    // For checking tasks seen status
-    this.tasksSeen = {};
-    // For checking tasks seen status
-    this.tasksUpdated = {};
     // For checking plural or singular
     this.notification = "";
   }
 
   async getProjects() {
-    const query = "4200534/projects.json";
+    const query = "/4200534/projects.json";
     const proxyRequest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
       uri: queryUrlBase + query
@@ -43,8 +39,12 @@ class Basecamp extends q.DesktopApp {
   async getUpdates() {
     // first get the user workspaces
     return this.getProjects().then(json => {
-      const user = json.data;
-      logger.info("This is the json of the projects: ", JSON.stringify(json));
+      logger.info("This is the json of the projects: " + JSON.stringify(json));
+
+      for (let section of json) {
+        logger.info("This is section inside the json: " + JSON.stringify(section));
+      }
+      
       // if (user.workspaces && user.workspaces.length) {
       //   const workspaceId = user.workspaces[0].id;
 
@@ -58,24 +58,12 @@ class Basecamp extends q.DesktopApp {
       //   });
       //   return (this.oauth2ProxyRequest(proxyRequest));
       // }
-    }).then(json => {
-      return json.data.filter(task => {
-        logger.info("This is a task: ", JSON.stringify(task));
-
-        // return ((this.tasksUpdated[task.id] != task.modified_at) && (task.assignee_status === 'new' ||
-        //   task.assignee_status === 'inbox'));
-      });
-
-    }).then(list => {
-      // for (let task of list) {
-      //   this.tasksUpdated[task.id] = task.modified_at;
-      // }
-      return list;
+      return null;
     });
   }
 
   async run() {
-    console.log("Running.");
+    logger.info("Basecamp3 running.");
     return this.getUpdates().then(newUpdates => {
       this.timestamp = getTimestamp();
       if (newUpdates && newUpdates.length > 0) {
