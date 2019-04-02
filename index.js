@@ -27,7 +27,7 @@ class Basecamp extends q.DesktopApp {
 
   async applyConfig() {
     // Array to keep in mind the projects name and update date.
-    this.projects = {};
+    this.updated_at = {};
 
     const query = "/4200534/projects.json";
     const proxyRequest = new q.Oauth2ProxyRequest({
@@ -43,9 +43,9 @@ class Basecamp extends q.DesktopApp {
       for (let project of projects) {
         logger.info("This is section inside the json: " + JSON.stringify(project));
         // Get name
-        this.projects[project.name].name = project.name;
+        // this.projects[project.name]["name"] = project.name;
         // Get date
-        this.projects[project.name].updated_at = project.updated_at;
+        this.updated_at[project.name] = project.updated_at;
         // Get url
         // url = project.app_url;
 
@@ -86,11 +86,11 @@ class Basecamp extends q.DesktopApp {
 
       for (let project of projects) {
         logger.info("This is section inside the json: " + JSON.stringify(project));
-        if(project.updated_at>this.projects[project.name].updated_at){
+        if(project.updated_at> this.updated_at[project.name]){
           // Need to send a signal         
           triggered=true;
           // Need to update the time
-          this.projects[project.name].updated_at = project.updated_at;
+          this.updated_at[project.name] = project.updated_at;
           // Update signal's message
           message.push(`New update in ${project.name}.`);
         }
