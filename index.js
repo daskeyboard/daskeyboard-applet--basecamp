@@ -25,7 +25,44 @@ class Basecamp extends q.DesktopApp {
     this.notification = "";
   }
 
-  async getProjects() {
+  async applyConfig() {
+    // Array to keep in mind the projects name and update date.
+    this.projects = {};
+
+    const query = "/4200534/projects.json";
+    const proxyRequest = new q.Oauth2ProxyRequest({
+      apiKey: this.authorization.apiKey,
+      uri: queryUrlBase + query
+    });
+
+    // first get the user projects
+    return this.oauth2ProxyRequest(proxyRequest).then((projects) => {
+
+      logger.info("Let's configure the project table.");
+
+      for (let project of projects) {
+        logger.info("This is section inside the json: " + JSON.stringify(project));
+        // Get name
+        this.projects[project.name].name = project.name;
+        // Get date
+        this.projects[project.name].updated_at = project.updated_at;
+        // Get url
+        // url = project.app_url;
+
+      }
+
+    })
+    .catch(error => {
+      logger.error(
+        `Got error sending request to service: ${JSON.stringify(error)}`);
+      return q.Signal.error([
+        'The Basecamp service returned an error. Please check your API key and account.',
+        `Detail: ${error.message}`]);
+    });
+
+  }
+
+  async getAllProjects() {
     const query = "/4200534/projects.json";
     const proxyRequest = new q.Oauth2ProxyRequest({
       apiKey: this.authorization.apiKey,
@@ -36,55 +73,46 @@ class Basecamp extends q.DesktopApp {
     return this.oauth2ProxyRequest(proxyRequest);
   }
 
-  async getUpdates() {
-    // first get the user workspaces
-    return this.getProjects().then(json => {
-      logger.info("This is the json of the projects: " + JSON.stringify(json));
-
-      for (let section of json) {
-        logger.info("This is section inside the json: " + JSON.stringify(section));
-      }
-      
-      // if (user.workspaces && user.workspaces.length) {
-      //   const workspaceId = user.workspaces[0].id;
-
-      //   const query = `/workspaces/${workspaceId}/tasks/search`;
-      //   const proxyRequest = new q.Oauth2ProxyRequest({
-      //     apiKey: this.authorization.apiKey,
-      //     uri: queryUrlBase + query,
-      //     method: 'GET',
-      //     qs: {
-      //     },
-      //   });
-      //   return (this.oauth2ProxyRequest(proxyRequest));
-      // }
-      return null;
-    });
-  }
-
   async run() {
     logger.info("Basecamp3 running.");
-    return this.getUpdates().then(newUpdates => {
-      this.timestamp = getTimestamp();
-      if (newUpdates && newUpdates.length > 0) {
+    return this.getAllProjects().then(projects => {
+      let triggered = false;
+      let message = [];
 
-        if (newUpdates.length == 1) {
-          this.notification = "a new notification";
-        } else {
-          this.notification = "new notifications";
+      this.timestamp = getTimestamp();
+
+      logger.info("This is the json of the projects: " + JSON.stringify(projects));
+      
+
+      for (let project of projects) {
+        logger.info("This is section inside the json: " + JSON.stringify(project));
+        if(project.updated_at>this.projects[project.name].updated_at){
+          // Need to send a signal         
+          triggered=true;
+          // Need to update the time
+          this.projects[project.name].updated_at = project.updated_at;
+          // Update signal's message
+          message.push(`New update in ${project.name}.`);
         }
 
-        logger.info("Got " + newUpdates.length + this.notification);
+      }
 
+      if (triggered) {
+
+        // if (newUpdates.length == 1) {
+        //   this.notification = "a new notification";
+        // } else {
+        //   this.notification = "new notifications";
+        // }
 
         return new q.Signal({
           points: [
-            [new q.Point("#0000FF", q.Effects.BLINK)]
+            [new q.Point(this.config.color, this.config.effect)]
           ],
           name: `Basecamp`,
-          message: `You have ${this.notification}.`,
+          message: message.join("<br>"),
           link: {
-            url: 'https://basecamp.com',
+            url: 'https://3.basecamp.com',
             label: 'Show in Basecamp',
           },
         });
