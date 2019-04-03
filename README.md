@@ -1,6 +1,6 @@
 # Q Applet: Basecamp
 
-Displays Basecamp 3 projects notifications on a Das Keyboard Q Series.
+Displays any Basecamp 3 projects activities (New tasks, messages, meetings, etc.) on a Das Keyboard Q Series.
 
 Basecamp is an ubiquitous project management tool, helping to manage
 projects and collaborate with clients.
