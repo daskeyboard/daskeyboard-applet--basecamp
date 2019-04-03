@@ -4,7 +4,10 @@ Displays Basecamp 3 projects notifications on a Das Keyboard Q Series.
 
 Basecamp is an ubiquitous project management tool, helping to manage
 projects and collaborate with clients.
+
 For more information about Basecamp visit <https://www.basecamp.com>.
+
+[GitHub repository](https://github.com/daskeyboard/daskeyboard-applet--basecamp)
 
 ![Basecamp applet on a Das Keyboard Q](assets/image.png "Das Keyboard Basecamp applet")
 
