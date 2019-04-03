@@ -101,11 +101,12 @@ class Basecamp extends q.DesktopApp {
         return null;
       }
     }).catch(error => {
-      const message = error.statusCode == 402
-        ? 'Payment required. This applet requires a premium Basecamp account.' : error;
-      logger.error(`Sending error signal: ${message}`);
-      throw new Error(message);
-    })
+      logger.error(
+        `Got error sending request to service: ${JSON.stringify(error)}`);
+      return q.Signal.error([
+        'The Basecamp service returned an error. Please check your API key and account.',
+        `Detail: ${error.message}`]);
+    });
   }
 }
 
