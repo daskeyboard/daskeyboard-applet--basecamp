@@ -44,8 +44,8 @@
       {
         "key": "userId",
         "label": "User ID",
-        "help": "To find out the ID of the account, copy it from the end of the URL of the Board. e.g: https://3.basecamp.com/<YOUR_REPO_ID>/projects",
-        "supportUrl": "https://app.zenhub.com/select-organization",
+        "help": "Login to your BaseCamp account then copy the numbers after the basecamp.com/ e.g: https://3.basecamp.com/<YOUR_REPO_ID>/projects",
+        "supportUrl": "https://launchpad.37signals.com/signin",
         "required": true,
         "placeholder": "e.g: 7452696",
         "order": 1,
@@ -53,10 +53,10 @@
       },
       {
         "key": "color",
-        "label": "Choose the color of the rmessageminder",
+        "label": "Choose the color of the reminder",
         "help": "",
         "required": true,
-        "order": 1,
+        "order": 2,
         "value": "#FFFF00",
         "controlType": "color"
       },
@@ -65,7 +65,7 @@
         "label": "Choose the effect of the reminder",
         "help": "",
         "required": true,
-        "order": 2,
+        "order": 3,
         "value": "BLINK",
         "controlType": "effect"
       }
