@@ -23,7 +23,7 @@ class Basecamp extends q.DesktopApp {
     if(this.userId){
 
       // first get all the user projects
-      return this.getAllProjects().then((projects) => {
+      await this.getAllProjects().then((projects) => {
 
         logger.info("Let's configure the project table by getting the time.");
 
@@ -36,9 +36,6 @@ class Basecamp extends q.DesktopApp {
       .catch(error => {
         logger.error(
           `Got error sending request to service: ${JSON.stringify(error)}`);
-        return q.Signal.error([
-          'The Basecamp service returned an error. Please check your user ID and account.',
-          `Detail: ${error.message}`]);
       });
 
     }else{
