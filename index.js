@@ -43,7 +43,6 @@ class Basecamp extends q.DesktopApp {
 
     }else{
       logger.info("UserId is not defined.");
-      return null;
     }
 
   }
