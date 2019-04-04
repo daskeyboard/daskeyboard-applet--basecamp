@@ -34,7 +34,7 @@ class Basecamp extends q.DesktopApp {
       logger.error(
         `Got error sending request to service: ${JSON.stringify(error)}`);
       return q.Signal.error([
-        'The Basecamp service returned an error. Please check your API key and account.',
+        'The Basecamp service returned an error. Please check your user ID and account.',
         `Detail: ${error.message}`]);
     });
 
@@ -106,7 +106,7 @@ class Basecamp extends q.DesktopApp {
       logger.error(
         `Got error sending request to service: ${JSON.stringify(error)}`);
       return q.Signal.error([
-        'The Basecamp service returned an error. Please check your API key and account.',
+        'The Basecamp service returned an error. Please check your user ID and account.',
         `Detail: ${error.message}`]);
     });
   }
