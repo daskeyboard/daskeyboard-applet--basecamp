@@ -1,6 +1,6 @@
 # Basecamp
 
-Displays any Basecamp 3 projects activities (new tasks, messages, meetings, etc.) on a Das Keyboard Q Series.
+Displays Basecamp 3 projects activities (new tasks, messages, meetings, etc.) on a Das Keyboard Q Series.
 
 Basecamp is an ubiquitous project management tool, helping to manage
 projects and collaborate with clients.
