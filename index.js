@@ -19,24 +19,32 @@ class Basecamp extends q.DesktopApp {
     // User ID
     this.userId = this.config.userId;
 
-    // first get all the user projects
-    return this.getAllProjects().then((projects) => {
+    // Only if userId is definded
+    if(this.userId){
 
-      logger.info("Let's configure the project table by getting the time.");
+      // first get all the user projects
+      return this.getAllProjects().then((projects) => {
 
-      for (let project of projects) {
-        // Get update_at for each project
-        this.updated_at[project.name] = project.updated_at;
-      }
+        logger.info("Let's configure the project table by getting the time.");
 
-    })
-    .catch(error => {
-      logger.error(
-        `Got error sending request to service: ${JSON.stringify(error)}`);
-      return q.Signal.error([
-        'The Basecamp service returned an error. Please check your user ID and account.',
-        `Detail: ${error.message}`]);
-    });
+        for (let project of projects) {
+          // Get update_at for each project
+          this.updated_at[project.name] = project.updated_at;
+        }
+
+      })
+      .catch(error => {
+        logger.error(
+          `Got error sending request to service: ${JSON.stringify(error)}`);
+        return q.Signal.error([
+          'The Basecamp service returned an error. Please check your user ID and account.',
+          `Detail: ${error.message}`]);
+      });
+
+    }else{
+      logger.info("UserId is not defined.");
+      return null;
+    }
 
   }
 
