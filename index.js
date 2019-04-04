@@ -11,6 +11,8 @@ class Basecamp extends q.DesktopApp {
   }
 
   async applyConfig() {
+    logger.info("applyCongig() Basecamp3.");
+
     // Array to keep in mind the projects name and update date.
     this.updated_at = {};
 
