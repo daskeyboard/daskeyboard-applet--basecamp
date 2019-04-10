@@ -74,7 +74,7 @@ class Basecamp extends q.DesktopApp {
           this.updated_at[project.name] = project.updated_at;
 
           // Update signal's message
-          message.push(`New update in ${project.name}.`);
+          message.push(`Update in ${project.name} project.`);
 
           // Update url:
           // if there are several notifications on different projects:
