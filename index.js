@@ -11,7 +11,7 @@ class Basecamp extends q.DesktopApp {
   }
 
   async applyConfig() {
-    logger.info("applyCongig() Basecamp3.");
+    logger.info("Basecamp3 initialisation.");
 
     // Array to keep in mind the projects name and update date.
     this.updated_at = {};
@@ -55,7 +55,7 @@ class Basecamp extends q.DesktopApp {
   }
 
   async run() {
-    logger.info("Running Basecamp3.");
+    logger.info("Basecamp3 running.");
     return this.getAllProjects().then(projects => {
       let triggered = false;
       let message = [];
@@ -109,8 +109,13 @@ class Basecamp extends q.DesktopApp {
     }).catch(error => {
       logger.error(
         `Got error sending request to service: ${JSON.stringify(error)}`);
+      if(`${error.message}`.includes("getaddrinfo")){
+        return q.Signal.error(
+          'The Basecamp service returned an error. <b>Please check your internet connection</b>.'
+        );
+      }
       return q.Signal.error([
-        'The Basecamp service returned an error. Please check your user ID and account.',
+        'The Basecamp service returned an error. <b>Please check your user ID and account</b>.',
         `Detail: ${error.message}`]);
     });
   }
