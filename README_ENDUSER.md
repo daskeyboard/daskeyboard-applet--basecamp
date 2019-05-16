@@ -2,6 +2,8 @@
 
 Displays Basecamp 3 projects activities (new tasks, messages, meetings, etc.) on a Das Keyboard Q Series.
 
+> You need a premium account.
+
 Basecamp is a project management tool, helping to manage
 projects and collaborate with clients.
 
